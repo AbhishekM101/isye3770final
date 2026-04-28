@@ -548,83 +548,163 @@ $$L = \frac{S_1^2}{S_2^2} \cdot f_{1-\alpha/2,\;n_2-1,\;n_1-1} \qquad U = \frac{
 <!-- LECTURE 9 -->
 <!-- ============================================================ -->
 <div class="section" id="lec9">
-<div class="section-bar rose">LECTURE 9 — HYPOTHESIS TESTING</div>
+<div class="section-bar rose">LECTURE 9 — HYPOTHESIS TESTING (Chapter 9)</div>
 
-<h2>4.1 Statistical Hypotheses</h2>
+<h2>4.1 What is a Statistical Hypothesis?</h2>
+<p>A <strong>statistical hypothesis</strong> is a statement about one or more parameters of a population. We use data to decide whether the statement is plausible.</p>
+
 <div class="box rose">
-<div class="label">Key Concepts</div>
-<p><strong>Statistical hypothesis:</strong> A statement about parameter(s) of a population.</p>
-<p><strong>$H_0$ (null hypothesis):</strong> The "status quo" — the conservative claim.</p>
-<p><strong>$H_1$ (alternative hypothesis):</strong> The new, radical claim we want to test.</p>
+<div class="label">The Two Hypotheses</div>
+<p><strong>$H_0$ — Null hypothesis:</strong> The old, conservative, "status quo" claim. This is what we assume is true unless we find strong evidence against it.</p>
+<p><strong>$H_1$ — Alternative hypothesis:</strong> The new, radical claim. This is what we want to gather evidence <em>for</em>.</p>
 </div>
 
-<p><strong>Types of tests:</strong></p>
+<p><strong>Example:</strong> A silicon wafer factory claims mean diameter is 25.4 mm. An engineer suspects otherwise.</p>
 <ul>
-<li><strong>Two-sided:</strong> $H_0: \theta = \theta_0$ vs $H_1: \theta \neq \theta_0$</li>
-<li><strong>One-sided:</strong> $H_0: \theta = \theta_0$ vs $H_1: \theta > \theta_0$ &nbsp;or&nbsp; $H_1: \theta < \theta_0$</li>
+<li>$H_0: \mu = 25.4$ (the factory's claim — status quo)</li>
+<li>$H_1: \mu \neq 25.4$ (the engineer's suspicion)</li>
 </ul>
 
-<h2>4.2 Errors, Significance Level &amp; Power</h2>
+<h3>Types of hypotheses:</h3>
 <div class="box rose">
-<div class="label">Type I and Type II Errors</div>
+<div class="label">Two-sided vs One-sided</div>
+<p><strong>Two-sided:</strong> $H_0: \theta = \theta_0$ &nbsp;vs&nbsp; $H_1: \theta \neq \theta_0$ — "is it different?"</p>
+<p><strong>One-sided (upper):</strong> $H_0: \theta = \theta_0$ &nbsp;vs&nbsp; $H_1: \theta > \theta_0$ — "is it larger?"</p>
+<p><strong>One-sided (lower):</strong> $H_0: \theta = \theta_0$ &nbsp;vs&nbsp; $H_1: \theta < \theta_0$ — "is it smaller?"</p>
+</div>
+
+<h2>4.2 Critical Region, Acceptance Region &amp; Test Statistics</h2>
+<p>A <strong>statistical test</strong> takes a decision about a parameter value supported by evidence from data. We compute a <strong>test statistic</strong> from the sample, and check whether it falls in the <strong>acceptance region</strong> or the <strong>critical (rejection) region</strong>.</p>
+
+<div class="box rose">
+<div class="label">Visual Idea (Two-sided)</div>
+<p>Imagine the number line for the test statistic $\hat{\theta}$:</p>
+<p style="font-family: 'Courier New', monospace; font-size: 14px; text-align:center;">
+&larr; <span style="color:var(--red);">critical region</span> | $\theta_L$ &nbsp;&nbsp;<span style="color:var(--green);">acceptance region (fail to reject $H_0$)</span>&nbsp;&nbsp; $\theta_U$ | <span style="color:var(--red);">critical region</span> &rarr;
+</p>
+<p>If the test statistic falls in a <strong>critical region</strong> → <strong>reject $H_0$</strong>.<br>
+If it falls in the <strong>acceptance region</strong> → <strong>fail to reject $H_0$</strong>.</p>
+</div>
+
+<h2>4.3 Errors in Testing</h2>
+
+<div class="box rose">
+<div class="label">Type I and Type II Errors — Decision Table</div>
 <table>
-<tr><th></th><th>$H_0$ is true</th><th>$H_0$ is false</th></tr>
-<tr><td><strong>Reject $H_0$</strong></td><td style="color:var(--red);">Type I error ($\alpha$)</td><td style="color:var(--green);">Correct! (Power = $1-\beta$)</td></tr>
-<tr><td><strong>Fail to reject $H_0$</strong></td><td style="color:var(--green);">Correct!</td><td style="color:var(--red);">Type II error ($\beta$)</td></tr>
+<tr><th>Our decision</th><th>$H_0$ is actually TRUE</th><th>$H_0$ is actually FALSE</th></tr>
+<tr><td><strong>Reject $H_0$</strong></td><td style="color:var(--red);"><strong>Type I error</strong> (probability = $\alpha$)</td><td style="color:var(--green);"><strong>Correct!</strong> (Power = $1-\beta$)</td></tr>
+<tr><td><strong>Fail to reject $H_0$</strong></td><td style="color:var(--green);"><strong>Correct!</strong></td><td style="color:var(--red);"><strong>Type II error</strong> (probability = $\beta$)</td></tr>
 </table>
-<p><strong>$\alpha$ = significance level</strong> = P(reject $H_0$ | $H_0$ true) — chosen in advance (e.g. 0.05).</p>
-<p><strong>$\beta$</strong> = P(fail to reject $H_0$ | $H_0$ false).</p>
-<p><strong>Power</strong> $= 1 - \beta$ = probability of correctly rejecting $H_0$ when it is false.</p>
 </div>
 
+<div class="box rose">
+<div class="label">Key Definitions</div>
+<p><strong>$\alpha$ = significance level = P(Type I error)</strong> = P(reject $H_0$ | $H_0$ is true)</p>
+<p>→ Chosen in advance (typically 0.01, 0.05, or 0.10). E.g., $\alpha = 0.05$ means that 5% of samples would wrongly lead us to reject $H_0$.</p>
+
+<p><strong>$\beta$ = P(Type II error)</strong> = P(fail to reject $H_0$ | $H_0$ is false)</p>
+<p>→ Measures the sensitivity of the test: how likely are we to miss a real difference?</p>
+
+<p><strong>Power = $1 - \beta$</strong> = probability of correctly rejecting $H_0$ when it is false.</p>
+<p>→ E.g., Power $= 0.9$ means we will correctly detect the difference 90% of the time.</p>
+</div>
+
+<h2>4.4 P-value</h2>
 <div class="box yellow">
-<div class="label">P-value</div>
-The <strong>p-value</strong> is the smallest significance level that would lead to rejection of $H_0$ given the data.<br><br>
-<strong>Decision rule:</strong> If p-value $\leq \alpha$, reject $H_0$. If p-value $> \alpha$, fail to reject $H_0$.
+<div class="label">Definition</div>
+<p>The <strong>p-value</strong> is the <em>smallest</em> level of significance $\alpha$ that would lead to rejection of $H_0$ given the observed data.</p>
+<p><strong>Decision rule:</strong></p>
+<ul>
+<li>If p-value $\leq \alpha$ → <strong>Reject $H_0$</strong></li>
+<li>If p-value $> \alpha$ → <strong>Fail to reject $H_0$</strong></li>
+</ul>
+<p><strong>How to find it:</strong> Compute the test statistic from the data, standardize it assuming $H_0$ is true, then compute the tail probability. The p-value tells you <em>how extreme</em> your data is under $H_0$.</p>
 </div>
 
-<h2>4.3 The 8-Step Hypothesis Testing Procedure</h2>
+<h2>4.5 The 8-Step Hypothesis Testing Procedure</h2>
+<div class="box rose">
+<div class="label">Follow these steps for EVERY test</div>
 <ol>
-<li>Identify the unknown parameter of interest</li>
-<li>State the null hypothesis $H_0$</li>
-<li>Specify the alternative hypothesis $H_1$</li>
-<li>Choose a significance level $\alpha$</li>
-<li>Determine the adequate test statistic</li>
-<li>Determine the rejection/acceptance region</li>
-<li>Compute the test statistic from the data</li>
-<li>Decide: reject or fail to reject $H_0$</li>
+<li><strong>Step 1:</strong> Identify the unknown parameter of interest from a population</li>
+<li><strong>Step 2:</strong> State the null hypothesis $H_0$</li>
+<li><strong>Step 3:</strong> Specify an adequate alternative hypothesis $H_1$</li>
+<li><strong>Step 4:</strong> Choose a significance level $\alpha$</li>
+<li><strong>Step 5:</strong> Determine the adequate test statistic for the problem</li>
+<li><strong>Step 6:</strong> Determine the rejection/acceptance region for the test statistic</li>
+<li><strong>Step 7:</strong> Compute the test statistic value from the available data</li>
+<li><strong>Step 8:</strong> Decide — reject or fail to reject $H_0$</li>
 </ol>
+</div>
 
-<h2>4.4 Z-test (Mean, $\sigma$ Known)</h2>
-<p><strong>Goal:</strong> Test $\mu$ when $\sigma^2$ is known. Under $H_0$: $\bar{X} \sim N(\mu_0, \sigma^2/n)$.</p>
+<hr>
+
+<h2>4.6 Z-test: Testing the Mean with Known Variance</h2>
+<p><strong>Goal:</strong> Test the unknown mean $\mu$ of a normal distribution when $\sigma^2$ is known.</p>
+<p><strong>Context:</strong> Random sample $X_1, \dots, X_n$ from the population. Under $H_0$, $\bar{X} \sim N(\mu_0, \sigma^2/n)$.</p>
 
 <div class="box rose">
 <div class="label">Test Statistic</div>
+<p>We standardize $\bar{X}$ assuming $H_0$ is true:</p>
 $$Z_0 = \frac{\bar{X} - \mu_0}{\sigma / \sqrt{n}}$$
+<p>Under $H_0$, $Z_0 \sim N(0, 1)$. If $H_0$ is true, it is <em>unlikely</em> that $Z_0$ would take a value far in the tails.</p>
 </div>
 
 <div class="box rose">
-<div class="label">Rejection Regions</div>
+<div class="label">Rejection Regions &amp; P-values</div>
 <table>
-<tr><th>$H_1$</th><th>Reject $H_0$ if</th><th>p-value</th></tr>
-<tr><td>$\mu \neq \mu_0$</td><td>$|Z_0| > z_{\alpha/2}$</td><td>$p = 2[1 - \Phi(|z_{0}|)]$</td></tr>
-<tr><td>$\mu > \mu_0$</td><td>$Z_0 > z_\alpha$</td><td>$p = 1 - \Phi(z_0)$</td></tr>
-<tr><td>$\mu < \mu_0$</td><td>$Z_0 < -z_\alpha$</td><td>$p = \Phi(z_0)$</td></tr>
+<tr><th>Alternative $H_1$</th><th>Reject $H_0$ if</th><th>Acceptance region for $Z_0$</th><th>P-value formula</th></tr>
+<tr><td>$\mu \neq \mu_0$ (two-sided)</td><td>$|Z_0| > z_{\alpha/2}$</td><td>$[-z_{\alpha/2},\; z_{\alpha/2}]$</td><td>$p = 2[1 - \Phi(|z_0|)]$</td></tr>
+<tr><td>$\mu > \mu_0$ (upper)</td><td>$Z_0 > z_\alpha$</td><td>$(-\infty,\; z_\alpha]$</td><td>$p = 1 - \Phi(z_0)$</td></tr>
+<tr><td>$\mu < \mu_0$ (lower)</td><td>$Z_0 < -z_\alpha$</td><td>$[-z_\alpha,\; +\infty)$</td><td>$p = \Phi(z_0)$</td></tr>
 </table>
+<p>Where $\Phi$ is the cdf of $N(0,1)$.</p>
 </div>
 
-<h3>Type II error for z-test (two-sided):</h3>
-<div class="math-block">
+<h3>Worked Example: Melting Point of Rocket Propellant Binder (from slides)</h3>
+<p>$n = 10$ samples, $\bar{x} = 154.2$ °F, $\sigma = 1.5$ °F. Test $H_0: \mu = 155$ vs $H_1: \mu \neq 155$ at $\alpha = 0.01$.</p>
+<div class="box gray">
+<div class="label">Solution</div>
+<p><strong>Step 5 — Test statistic:</strong></p>
+$$Z_0 = \frac{154.2 - 155}{1.5/\sqrt{10}} = \frac{-0.8}{0.4743} = -1.687$$
+<p><strong>Step 6 — Critical region:</strong> $\alpha = 0.01$, two-sided, so $z_{\alpha/2} = z_{0.005} = 2.576$.</p>
+<p>Reject if $|Z_0| > 2.576$.</p>
+<p><strong>Step 8 — Decision:</strong> $|-1.687| = 1.687 < 2.576$ → <strong>Fail to reject $H_0$</strong>. Not enough evidence that $\mu \neq 155$.</p>
+<p><strong>P-value:</strong> $p = 2[1 - \Phi(1.687)] = 2[1 - 0.9543] = 2(0.0457) = 0.0914$.</p>
+<p>Since $0.0914 > 0.01 = \alpha$, we confirm: fail to reject $H_0$.</p>
+</div>
+
+<h3>Type II Error ($\beta$) for a Z-test</h3>
+<p>If $H_1$ is true (i.e. $\mu = \mu_0 + \delta$), then $Z_0 \sim N\!\left(\frac{\delta\sqrt{n}}{\sigma},\; 1\right)$. A Type II error occurs when $Z_0$ still falls in the acceptance region:</p>
+<div class="box rose">
+<div class="label">$\beta$ Formula (two-sided)</div>
 $$\beta = \Phi\!\left(z_{\alpha/2} - \frac{\delta\sqrt{n}}{\sigma}\right) - \Phi\!\left(-z_{\alpha/2} - \frac{\delta\sqrt{n}}{\sigma}\right) \qquad \text{where } \delta = \mu - \mu_0$$
 </div>
 
-<h3>Sample size formula (two-sided):</h3>
-<div class="math-block">
-$$n \approx \frac{\sigma^2(z_{\alpha/2} + z_\beta)^2}{\delta^2} \qquad \text{(one-sided: replace } z_{\alpha/2} \text{ with } z_\alpha\text{)}$$
+<h3>Sample Size Formula</h3>
+<p>The $\beta$ formula can be simplified (keeping the dominant term) and solved for $n$:</p>
+<div class="box rose">
+<div class="label">Required sample size</div>
+$$\text{Two-sided: } n \approx \frac{\sigma^2(z_{\alpha/2} + z_\beta)^2}{\delta^2} \qquad \text{One-sided: } n = \frac{\sigma^2(z_\alpha + z_\beta)^2}{\delta^2}$$
+<p>where $\delta = \mu - \mu_0$ is the difference you want to detect.</p>
 </div>
 
-<h2>4.5 T-test (Mean, $\sigma$ Unknown)</h2>
-<p><strong>Goal:</strong> Test $\mu$ when $\sigma^2$ is unknown. Replace $\sigma$ with $S$.</p>
+<h3>Worked Example: Melting Point continued (parts c, d from slides)</h3>
+<div class="box gray">
+<div class="label">Solution</div>
+<p><strong>(c) $\beta$ if true mean is $\mu = 150$:</strong> $\delta = 150 - 155 = -5$, $\sigma = 1.5$, $n = 10$, $\alpha = 0.01$.</p>
+$$\beta = \Phi\!\left(2.576 - \frac{(-5)\sqrt{10}}{1.5}\right) - \Phi\!\left(-2.576 - \frac{(-5)\sqrt{10}}{1.5}\right)$$
+$$= \Phi(2.576 + 10.54) - \Phi(-2.576 + 10.54) = \Phi(13.12) - \Phi(7.96) \approx 1 - 1 = 0$$
+<p>$\beta \approx 0$, so Power $\approx 1$. We would almost certainly detect this difference.</p>
+
+<p><strong>(d) $n$ required for $\beta < 0.1$ when $\mu = 150$, $\alpha = 0.01$:</strong></p>
+$$n \approx \frac{(1.5)^2(z_{0.005} + z_{0.1})^2}{(-5)^2} = \frac{2.25 \times (2.576 + 1.282)^2}{25} = \frac{2.25 \times 14.89}{25} = \frac{33.5}{25} \approx 2$$
+<p>Only $n = 2$ samples needed — the difference $\delta = 5$ is so large relative to $\sigma = 1.5$ that detection is very easy.</p>
+</div>
+
+<hr>
+
+<h2>4.7 T-test: Testing the Mean with Unknown Variance</h2>
+<p><strong>Goal:</strong> Test $\mu$ when $\sigma^2$ is <em>unknown</em>. Same setup as z-test, but replace $\sigma$ with sample standard deviation $S$.</p>
 
 <div class="box rose">
 <div class="label">Test Statistic</div>
@@ -632,50 +712,142 @@ $$T_0 = \frac{\bar{X} - \mu_0}{S / \sqrt{n}} \quad \sim\; t(n-1) \text{ under } 
 </div>
 
 <div class="box rose">
-<div class="label">Rejection Regions</div>
+<div class="label">Rejection Regions &amp; P-values</div>
 <table>
-<tr><th>$H_1$</th><th>Reject $H_0$ if</th><th>p-value</th></tr>
-<tr><td>$\mu \neq \mu_0$</td><td>$|T_0| > t_{\alpha/2,\,n-1}$</td><td>$p = 2[1 - \text{cdf}_{t(n-1)}(|t_0|)]$</td></tr>
-<tr><td>$\mu > \mu_0$</td><td>$T_0 > t_{\alpha,\,n-1}$</td><td>$p = 1 - \text{cdf}_{t(n-1)}(t_0)$</td></tr>
-<tr><td>$\mu < \mu_0$</td><td>$T_0 < -t_{\alpha,\,n-1}$</td><td>$p = \text{cdf}_{t(n-1)}(t_0)$</td></tr>
+<tr><th>Alternative $H_1$</th><th>Reject $H_0$ if</th><th>Acceptance region for $T_0$</th><th>P-value</th></tr>
+<tr><td>$\mu \neq \mu_0$</td><td>$|T_0| > t_{\alpha/2,\,n-1}$</td><td>$[-t_{\alpha/2,n-1},\; t_{\alpha/2,n-1}]$</td><td>$p = 2[1 - \text{cdf}_{t(n-1)}(|t_0|)]$</td></tr>
+<tr><td>$\mu > \mu_0$</td><td>$T_0 > t_{\alpha,\,n-1}$</td><td>$(-\infty,\; t_{\alpha,n-1}]$</td><td>$p = 1 - \text{cdf}_{t(n-1)}(t_0)$</td></tr>
+<tr><td>$\mu < \mu_0$</td><td>$T_0 < -t_{\alpha,\,n-1}$</td><td>$[-t_{\alpha,n-1},\; +\infty)$</td><td>$p = \text{cdf}_{t(n-1)}(t_0)$</td></tr>
 </table>
 </div>
 
-<p>For Type II error and sample size in t-tests, use <strong>Operating Characteristic (OC) curves</strong> with parameter $d = |\delta|/\sigma = |\mu_0 - \mu|/\sigma$.</p>
+<div class="warn">⚠ The cdf table of the $t$-distribution is not resolved enough to compute exact p-values. However, the table can give <strong>upper and lower bounds</strong> on the p-value. For example, if $t_{0.025,9} = 2.262$ and $t_{0.01,9} = 2.821$, and your $|t_0| = 2.5$, then $0.02 < p < 0.05$.</div>
 
-<h2>4.6 Chi-Square Test (Variance)</h2>
+<h3>Worked Example: Water Concentration (from slides)</h3>
+<p>$n = 60$ measurements, $\bar{x} = 59.87$, $s = 12.50$. Test $H_0: \mu = 55$ vs $H_1: \mu \neq 55$ at $\alpha = 0.05$.</p>
+<div class="box gray">
+<div class="label">Solution</div>
+<p>Since $n = 60 \geq 30$, we can use either a z-test (by CLT) or a t-test. Using z-approach since $n$ is large and $s$ approximates $\sigma$:</p>
+$$Z_0 = \frac{59.87 - 55}{12.50/\sqrt{60}} = \frac{4.87}{1.614} = 3.018$$
+<p><strong>(a)</strong> $z_{0.025} = 1.96$. Since $|3.018| > 1.96$ → <strong>Reject $H_0$</strong>. Evidence that mean concentration $\neq 55$.</p>
+<p><strong>(b) P-value:</strong> $p = 2[1 - \Phi(3.018)] = 2(0.00127) = 0.00254$. Very small → strong evidence against $H_0$.</p>
+<p><strong>(c) Power if $\mu = 50$:</strong> $\delta = 50 - 55 = -5$</p>
+$$\beta \approx \Phi\!\left(1.96 - \frac{5\sqrt{60}}{12.50}\right) = \Phi(1.96 - 3.098) = \Phi(-1.138) = 0.1276$$
+<p>Power $= 1 - 0.1276 = 0.872$.</p>
+<p><strong>(d) $n$ for Power $\geq 0.9$ ($\beta \leq 0.1$):</strong></p>
+$$n \approx \frac{(12.50)^2(1.96 + 1.282)^2}{(-5)^2} = \frac{156.25 \times 10.524}{25} = \frac{1644.4}{25} = 65.8 \;\Rightarrow\; \boxed{n = 66}$$
+</div>
+
+<h3>Type II Error &amp; Sample Size for T-test</h3>
+<p>For the t-test, the $\beta$ calculation involves a <em>non-central</em> $t$-distribution, which has no simple closed-form. Instead, we use <strong>Operating Characteristic (OC) curves</strong> from the textbook appendix.</p>
+<div class="box rose">
+<div class="label">OC Curves for T-test</div>
+<p>The OC curves plot $\beta$ as a function of $d = |\delta|/\sigma = |\mu_0 - \mu|/\sigma$ for various sample sizes $n$.</p>
+<p><strong>How to use:</strong></p>
+<ol>
+<li>Compute $d = |\mu_0 - \mu|/\sigma$ (estimate $\sigma$ with $s$ if needed).</li>
+<li>Choose the appropriate chart (one-sided or two-sided, $\alpha = 0.05$ or $0.01$).</li>
+<li>Find $d$ on the x-axis, then read $\beta$ from the curve for your $n$.</li>
+</ol>
+<p><strong>Rule of thumb:</strong> $d \leq 1$ → small difference to detect. $d = 2$ → moderate difference.</p>
+</div>
+
+<hr>
+
+<h2>4.8 Chi-Square Test: Testing the Variance</h2>
 <p><strong>Goal:</strong> Test $\sigma^2$ of a normal distribution.</p>
 
 <div class="box rose">
 <div class="label">Test Statistic</div>
+<p>Standardize $S^2$ assuming $H_0: \sigma^2 = \sigma_0^2$ is true:</p>
 $$\chi_0^{[2]} = \frac{(n-1)S^2}{\sigma_0^2} \quad \sim\; \chi^2(n-1) \text{ under } H_0$$
 </div>
 
 <div class="box rose">
 <div class="label">Rejection Regions</div>
 <table>
-<tr><th>$H_1$</th><th>Reject $H_0$ if</th></tr>
-<tr><td>$\sigma^2 \neq \sigma_0^2$</td><td>$\chi_0^{[2]} < \chi^2_{1-\alpha/2,\,n-1}$ &nbsp;or&nbsp; $\chi_0^{[2]} > \chi^2_{\alpha/2,\,n-1}$</td></tr>
-<tr><td>$\sigma^2 > \sigma_0^2$</td><td>$\chi_0^{[2]} > \chi^2_{\alpha,\,n-1}$</td></tr>
-<tr><td>$\sigma^2 < \sigma_0^2$</td><td>$\chi_0^{[2]} < \chi^2_{1-\alpha,\,n-1}$</td></tr>
+<tr><th>Alternative $H_1$</th><th>Reject $H_0$ if</th><th>Acceptance region for $\chi_0^{[2]}$</th></tr>
+<tr><td>$\sigma^2 \neq \sigma_0^2$ (two-sided)</td><td>$\chi_0^{[2]} < \chi^2_{1-\alpha/2,\,n-1}$ or $\chi_0^{[2]} > \chi^2_{\alpha/2,\,n-1}$</td><td>$[\chi^2_{1-\alpha/2,n-1},\;\chi^2_{\alpha/2,n-1}]$</td></tr>
+<tr><td>$\sigma^2 > \sigma_0^2$ (upper)</td><td>$\chi_0^{[2]} > \chi^2_{\alpha,\,n-1}$</td><td>$[0,\;\chi^2_{\alpha,n-1}]$</td></tr>
+<tr><td>$\sigma^2 < \sigma_0^2$ (lower)</td><td>$\chi_0^{[2]} < \chi^2_{1-\alpha,\,n-1}$</td><td>$[\chi^2_{1-\alpha,n-1},\; +\infty)$</td></tr>
 </table>
 </div>
 
-<p>For Type II error: use OC curves with $\lambda = \sigma / \sigma_0$.</p>
+<h3>Worked Example: Rivet Holes (from slides)</h3>
+<p>$n = 15$ rivet holes, $s = 0.008$ mm. If $\sigma > 0.01$ mm, the rivet won't fit. Test $H_0: \sigma^2 = 0.0001$ vs $H_1: \sigma^2 > 0.0001$ at $\alpha = 0.01$.</p>
+<div class="box gray">
+<div class="label">Solution</div>
+<p>We assume hole diameters are normally distributed.</p>
+<p><strong>Test statistic:</strong></p>
+$$\chi_0^{[2]} = \frac{(15-1)(0.008)^2}{(0.01)^2} = \frac{14 \times 0.000064}{0.0001} = \frac{0.000896}{0.0001} = 8.96$$
+<p><strong>Critical value:</strong> One-sided upper test. $\chi^2_{0.01,14} = 29.14$.</p>
+<p><strong>Decision:</strong> $8.96 < 29.14$ → <strong>Fail to reject $H_0$</strong>. No evidence that $\sigma$ exceeds 0.01 mm.</p>
+<p><strong>(b) P-value:</strong> Since $\chi_0^{[2]} = 8.96$ is far below the critical value, the p-value is very large (well above 0.10). From tables, $\chi^2_{0.90,14} = 7.79$ and $\chi^2_{0.75,14} = 10.17$, so $0.75 < p < 0.90$.</p>
+<p><strong>(c) Sample size for Power $\geq 0.8$ if $\sigma = 0.0125$, $\alpha = 0.05$:</strong></p>
+<p>$\lambda = \sigma/\sigma_0 = 0.0125/0.01 = 1.25$. From the OC curve for a one-sided $\chi^2$ test ($\alpha = 0.05$), find $\lambda = 1.25$ and $\beta \leq 0.20$. Reading the chart gives approximately $n \approx 50$.</p>
+</div>
 
-<h2>4.7 Goodness-of-Fit Test</h2>
-<p>Tests whether data follows a hypothesized distribution $D_0$.</p>
+<h3>Type II Error for $\chi^2$ test</h3>
+<p>Uses <strong>OC curves</strong> with parameter $\lambda = \sigma / \sigma_0$ (ratio of true to hypothesized std dev). Read $\beta$ for your $\lambda$ and $n$.</p>
+
+<hr>
+
+<h2>4.9 Goodness-of-Fit Test</h2>
+<p>All tests above assume we know the population distribution (e.g. normal) and test a parameter value. But what if we want to test <em>which distribution</em> the data follows?</p>
+
 <div class="box rose">
-<div class="label">Procedure</div>
+<div class="label">Goodness-of-Fit Procedure</div>
 <ol>
-<li>Compute frequency histogram with $k$ bins → observed frequencies $O_i$</li>
-<li>Compute expected frequencies $E_i$ from hypothesized distribution</li>
-<li>Test statistic: $\chi_0^{[2]} = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i} \;\sim\; \chi^2(k - p - 1)$<br>
-where $p$ = number of estimated parameters, $k$ = number of bins</li>
-<li>$H_0$: population follows $D_0$ &nbsp;|&nbsp; $H_1$: population does not follow $D_0$</li>
-<li>Reject $H_0$ if $\chi_0^{[2]} > \chi^2_{\alpha,\;k-p-1}$</li>
+<li>Compute a frequency histogram with $k$ bins → observed frequencies $O_i$</li>
+<li>Compute expected frequencies $E_i$ from the hypothesized distribution</li>
+<li>Compute the test statistic:
+$$\chi_0^{[2]} = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i} \;\sim\; \chi^2(k - p - 1)$$
+where $k$ = number of bins, $p$ = number of estimated parameters of the distribution</li>
+<li>$H_0$: the population is distributed according to $D_0$<br>
+$H_1$: the population is NOT distributed according to $D_0$</li>
+<li><strong>Reject $H_0$ if $\chi_0^{[2]} > \chi^2_{\alpha,\;k-p-1}$</strong></li>
 </ol>
 </div>
+
+<h3>Worked Example: Poisson Defects (from slides)</h3>
+<p>$n = 60$ electronic boards. Observed defects:</p>
+<table>
+<tr><th>Number of defects</th><th>Observed frequency $O_i$</th></tr>
+<tr><td>0</td><td>32</td></tr>
+<tr><td>1</td><td>15</td></tr>
+<tr><td>2</td><td>9</td></tr>
+<tr><td>3 or more</td><td>4</td></tr>
+</table>
+<p>Test: does the number of defects follow a Poisson distribution? Use $\alpha = 0.05$.</p>
+
+<div class="box gray">
+<div class="label">Solution</div>
+<p><strong>Step 1 — Estimate $\lambda$:</strong> $\hat{\lambda} = \bar{x} = [0(32) + 1(15) + 2(9) + 3(4)]/60 = (0+15+18+12)/60 = 45/60 = 0.75$</p>
+<p><strong>Step 2 — Compute expected frequencies</strong> using Poisson($\lambda = 0.75$):</p>
+<p>$P(X=0) = e^{-0.75} = 0.4724$ → $E_0 = 60 \times 0.4724 = 28.35$</p>
+<p>$P(X=1) = 0.75 \cdot e^{-0.75} = 0.3543$ → $E_1 = 60 \times 0.3543 = 21.26$</p>
+<p>$P(X=2) = \frac{0.75^2}{2} e^{-0.75} = 0.1329$ → $E_2 = 60 \times 0.1329 = 7.97$</p>
+<p>$P(X \geq 3) = 1 - 0.9596 = 0.0404$ → $E_3 = 60 \times 0.0404 = 2.42$</p>
+<p><strong>Step 3 — Test statistic:</strong></p>
+$$\chi_0^{[2]} = \frac{(32-28.35)^2}{28.35} + \frac{(15-21.26)^2}{21.26} + \frac{(9-7.97)^2}{7.97} + \frac{(4-2.42)^2}{2.42}$$
+$$= \frac{13.32}{28.35} + \frac{39.19}{21.26} + \frac{1.06}{7.97} + \frac{2.50}{2.42} = 0.470 + 1.843 + 0.133 + 1.033 = 3.479$$
+<p><strong>Step 4 — Degrees of freedom:</strong> $k = 4$ bins, $p = 1$ (estimated $\lambda$), so df $= 4 - 1 - 1 = 2$.</p>
+<p><strong>Step 5 — Critical value:</strong> $\chi^2_{0.05, 2} = 5.991$.</p>
+<p><strong>Step 6 — Decision:</strong> $3.479 < 5.991$ → <strong>Fail to reject $H_0$</strong>. No evidence against the Poisson model.</p>
+</div>
+
+<hr>
+
+<h2>4.10 Summary: Which Test to Use?</h2>
+<div class="tree">
+<strong>What are you testing?</strong><br>
+├─ <strong>Mean μ</strong><br>
+│&nbsp;&nbsp; ├─ σ known → <span class="z">Z-test</span>: $Z_0 = (\bar{X}-\mu_0)/(\sigma/\sqrt{n})$<br>
+│&nbsp;&nbsp; └─ σ unknown → <span class="t">T-test</span>: $T_0 = (\bar{X}-\mu_0)/(S/\sqrt{n})$, df $= n-1$<br>
+├─ <strong>Variance σ²</strong> → <span class="chi">χ² test</span>: $\chi_0^2 = (n-1)S^2/\sigma_0^2$, df $= n-1$<br>
+└─ <strong>Distribution type</strong> → <span class="f">Goodness-of-fit</span>: $\chi_0^2 = \sum(O_i-E_i)^2/E_i$, df $= k-p-1$
+</div>
+
 </div>
 
 <!-- ============================================================ -->
